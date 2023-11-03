@@ -21,14 +21,15 @@ int swap(mat & temp, int i, int j, int x, int y) {
     return temp[i][j] + temp[x][y];
 }
 
-int moves[7][4] = {
+int moves[8][4] = {
     {0, 1, 0, 2}, 
     {0, 1, 1, 1}, 
     {0, 2, 1, 2}, 
     {1, 1, 1, 2}, 
     {1, 1, 2, 1}, 
     {1, 1, 1, 0}, 
-    {1, 0, 2, 0}
+    {1, 0, 2, 0},
+    {2, 0, 2, 1}
 };
 
 
@@ -71,7 +72,7 @@ void fillPerm(mat current, int assigned, mat & end){
     mat temp(current);
     list preliminar;
     int cost;
-    for(int i = 0; i < 7; i ++){
+    for(int i = 0; i < 8; i ++){
         cost = swap(temp, moves[i][0], moves[i][1], moves[i][2], moves[i][3]);
         long long int key = static_cast<long long int>(hasher(temp));
         auto mem = membrain.find(key);
