@@ -20,11 +20,11 @@ void dijkstra(adj & graph, int src, std::vector<long long int> & memo, int * vis
         tot_w = memo[temp];
         vis[temp] = 1;
         size = graph[temp].size();
+        cola.pop();
         for(list i : graph[temp]){
             if(memo[i[0]] > tot_w + i[1])memo[i[0]] = tot_w + i[1];
             if(!vis[i[0]]){cola.push(i[0]); vis[i[0]] = 1;}
         }
-        cola.pop();
     }
 }
 
