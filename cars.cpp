@@ -97,7 +97,6 @@ void fillPerm(mat current, int assigned, mat & end){
 
             memo[assigned].push_back(preliminar);
             preliminar.clear();
-
             // preliminar.push_back(assigned);
             // preliminar.push_back(cost);
             // memo[covered].push_back(preliminar);
