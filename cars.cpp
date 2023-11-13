@@ -1,10 +1,34 @@
 #include <bits/stdc++.h>
-#include "dijkstra.cpp"
-typedef std::vector<int> lista;
-typedef std::vector<lista> mat;
+typedef std::vector<int> list;
+typedef std::vector<list> mat;
 typedef std::vector<mat> adjacency;
 typedef std::unordered_map<int, mat> map;
 typedef std::queue<mat> cola;
+#define INF 1e9
+#define ll long long int
+int N;
+#define MAX_V 250001
+typedef std::pair<int, int> ii;
+std::vector<ii> G[MAX_V];
+//To add an edge use
+#define add(a, b, w) G[a].push_back(std::make_pair(w, b))
+
+
+ll dijkstra(int s, int t){
+	std::priority_queue<ii, std::vector<ii>, std::greater<ii> > Q;
+	std::vector<ll> dist(MAX_V, INF);
+	Q.push(std::make_pair(0, s)); dist[s] = 0;
+	while(!Q.empty()){
+		ii p = Q.top(); Q.pop();
+		if(p.second == t) break;
+		for(ii i : G[p.second])
+			if(dist[p.second] + i.first < dist[i.second]){
+				dist[i.second] = dist[p.second] + i.first;
+				Q.push(std::make_pair(dist[i.second], i.second));	}
+	}
+	return dist[t];
+}
+
 map membrain;
 adjacency memo(5040);
 int covered = 0;
@@ -81,22 +105,14 @@ void fillPerm(mat current, int assigned, mat & end){
             covered ++;
             if(!target && cmp(temp, end)) target = covered;
             record[key] = covered;
-            preliminar.push_back(covered);
-            preliminar.push_back(cost);
-
-            memo[assigned].push_back(preliminar);
-            preliminar.clear();
+            add(assigned, covered, cost);
             // preliminar.push_back(assigned);
             // preliminar.push_back(cost);
             // memo[covered].push_back(preliminar);
             // preliminar.clear();
         }
         else{
-            preliminar.push_back(record[key]);
-            preliminar.push_back(cost);
-
-            memo[assigned].push_back(preliminar);
-            preliminar.clear();
+            add(assigned, covered, cost);
             // preliminar.push_back(assigned);
             // preliminar.push_back(cost);
             // memo[covered].push_back(preliminar);
@@ -112,7 +128,7 @@ void fillPerm(mat current, int assigned, mat & end){
 }
 
 int main(){
-    mat start(3, lista(3, 0));
+    mat start(3, list(3, 0));
     std::cin >> start[0][1];
     std::cin >> start[0][2];
     std::cin >> start[1][0];
@@ -120,7 +136,7 @@ int main(){
     std::cin >> start[1][2];
     std::cin >> start[2][0];
     std::cin >> start[2][1];
-    mat end(3, lista(3, 0));
+    mat end(3, list(3, 0));
     std::cin >> end[0][1];
     std::cin >> end[0][2];
     std::cin >> end[1][0];
@@ -135,20 +151,13 @@ int main(){
         counter++;
     }
 
-    // for(mat i: memo){
-    //     for(list j : i){
-    //         for(int k : j){
-    //             std::cout << "(" << k << ")";
-    //         }
-    //         std::cout << " ";
-    //     }
-    //     std::cout << "end" << std::endl;
-    // }
-    std::vector<long long int> memory(5040, (1 << 30));
-    memory[0] = 0;
-    dijkstra(memo, 0, memory, vis);
+    for(std::vector<ii> i: G){
+        for(ii j : i)
+            std::cout << '(' << j.second << ", "<< j.first << ')';
+        std::cout << '\n';
+    }
 
-    std::cout << memory[target] << '\n';
+    std::cout << dijkstra(0, target) << '\n';
     // for(int i:memory)std::cout << i << std::endl;
     
 

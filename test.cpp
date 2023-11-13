@@ -6,12 +6,11 @@ int N;
 typedef std::pair<int, int> ii;
 std::vector<ii> G[MAX_V];
 //To add an edge use
-#define add(a, b, w) G[a].pb(make_pair(w, b))
+#define add(a, b, w) G[a].push_back(std::make_pair(w, b))
 
-
-ll dijkstra(int s, int t, std::vector<ii> & graph){
+ll dijkstra(int s, int t){
 	std::priority_queue<ii, std::vector<ii>, std::greater<ii> > Q;
-	std::vector<ll> dist(N, INF); std::vector<int> dad(N, -1);
+	std::vector<ll> dist(MAX_V, INF); std::vector<int> dad(MAX_V, -1);
 	Q.push(std::make_pair(0, s)); dist[s] = 0;
 	while(!Q.empty()){
 		ii p = Q.top(); Q.pop();
@@ -23,4 +22,20 @@ ll dijkstra(int s, int t, std::vector<ii> & graph){
 				Q.push(std::make_pair(dist[i.second], i.second));	}
 	}
 	return dist[t];
-    }	
+}
+
+int main(){
+    int n, edges;
+    std::cin >> n;
+    std::cin >> edges;
+    int start, end;
+    std::cin >> start >> end;
+    int a, b, w;
+    for(int i = 0; i < edges; i ++){
+        std::cin >> a >> b >> w;
+        add(a, b, w);
+    }
+    std::cout << dijkstra(start, end) << std::endl;
+
+    return 0;
+}
